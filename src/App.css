@@ -18,21 +18,29 @@
     display: flex;
     flex-direction: column;
 }
-.User-Nav>a{
+.User-Nav>ul>li>a{
     display: flex;
     height: 20px;
     text-decoration: none;
     color: white;
 }
-.User-Nav>a:hover{
+.User-Nav>ul>li>a:hover{
     color: #e3d5d5;
+}
+.User-Nav>ul{
+     list-style-type:none;
 }
 
 .User-Msg{
     background-color: #7d7dfd;
     width: 80%;
+    height: 1000px;
+    overflow: scroll;
 }
 .User{
     display: flex;
     width: 100%;
+}
+.Find-One{
+    overflow: hidden;
 }

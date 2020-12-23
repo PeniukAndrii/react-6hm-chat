@@ -6,17 +6,21 @@ import MyUi from "./Components/MyUI/MyUI";
 
 class App extends Component {
 
-
     render() {
         return (
             <Router>
                 <div className={'blue'}>
                       <div className={'User-Nav'}>
-                              <Link to={'/user/1'}>Иван Петрович</Link>
-                              <Link to={'/user/2'}>Олег Бойко</Link>
-                              <Link to={'/user/3'}>Андрій Сойка</Link>
-                              <Link to={'/user/4'}>Бодун Швидкість</Link>
-                              <Link to={'/user/5'}>Вован Мачмен</Link>
+                                <form className={'Find-One'} onSubmit={this.Fixed}>
+                                    <input type="text" />
+                                </form>
+                          <ul>
+                              <li><Link to={'/user/1'}>Иван Петрович</Link></li>
+                              <li><Link to={'/user/2'}>Олег Бойко</Link></li>
+                              <li><Link to={'/user/3'}>Андрій Сойка</Link></li>
+                              <li><Link to={'/user/4'}>Бодун Швидкість</Link></li>
+                              <li><Link to={'/user/5'}>Вован Мачмен</Link></li>
+                          </ul>
                       </div>
                         <div className={'User-Msg'}>
                             <Switch>
