@@ -1,32 +1,42 @@
 import React, {Component} from 'react';
 import MessageOut from "../Message/MessageOut";
-
-
+import AllService from "../../Service/AllService";
+import '../../App.css'
 
 
 class MyUi extends Component {
+    AllService = new AllService()
     Text = React.createRef()
-    state={message:[], time:[]}
+    state={message:[], time:[], joke:[]}
 
 
     async componentDidMount() {
-        let getLocal = await JSON.parse(localStorage.getItem(`id${this.props.id}`))
-        let getLocalTime = await JSON.parse(localStorage.getItem(`TimeId${this.props.id}`))
+        let {id} = this.props
+        let getLocal = await this.AllService.getItem(`id${id}`)
+        let getLocalTime = await this.AllService.getItem(`TimeId${id}`)
+        let getLocalJoke = await this.AllService.getItem(`JokeId${id}`)
         if (getLocal) {
             this.setState({message: getLocal})
             this.setState({time: getLocalTime})
+            this.setState({joke: getLocalJoke})
         }
-        console.log('componentDidMount')
     }
 
-    InputInside=()=> {
-        this.state.message.push(this.Text.current.value)
-        this.state.time.push(new Date().toLocaleTimeString())
-        localStorage.setItem(`id${this.props.id}`, JSON.stringify(this.state.message))
-        localStorage.setItem(`TimeId${this.props.id}`, JSON.stringify(this.state.time))
+    InputInside = async () =>{
+        if(this.Text.current.value===''){
+            alert('Введіть повідомлення')
+            return
+        }
+        let {id} = this.props
+        let {message, time, joke} = this.state
+        await this.AllService.getJoke().then(value=>joke.push(value.value))
+        message.push(this.Text.current.value)
+        time.push(new Date().toLocaleTimeString())
+        this.AllService.setItem(`JokeId${id}`,joke)
+        this.AllService.setItem(`id${id}`,message)
+        this.AllService.setItem(`TimeId${id}`,time)
         this.Text.current.value = ''
         this.forceUpdate()
-        console.log('InputInside')
     }
 
     Fixed=(e)=>{
@@ -34,15 +44,15 @@ class MyUi extends Component {
     }
 
     render() {
-        let {message} =this.state
+        let {message, joke} = this.state
         return (
             <div>
                 {
-                    message.map((value,index) => <MessageOut item={value} index={index} key={index} time={this.state.time} id={this.props.id}/>)
+                    message.map((value,index) => <MessageOut item={value} index={index} key={index} time={this.state.time} id={this.props.id} joke={joke}/>)
                 }
-                <form onSubmit={this.Fixed} className={'Input-Msg'}>
-                    <input ref={this.Text}/>
-                    <button onClick={this.InputInside}>Send</button>
+                <form onSubmit={this.Fixed} className={'Form'}>
+                        <input ref={this.Text} placeholder={'Message...'} className={'Input-Msg'}/>
+                        <button onClick={this.InputInside} className={'Form-Btn'}>Send</button>
                 </form>
             </div>
         );
